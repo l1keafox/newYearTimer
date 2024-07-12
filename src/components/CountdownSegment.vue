@@ -1,15 +1,25 @@
 <script setup>
-defineProps({
-  label: String,
-  number: Number
-});
+import { watch,ref } from 'vue';
+
+const props = defineProps(["number","label"]);
+const change = ref(true);
+
+watch(()=>props.number, async(newX)=>{
+  change.value = false;
+  setTimeout(()=>{
+    change.value = true;
+  },100)
+})
+
 </script>
 <template>
   <div class="segment">
     <div class="number-wrapper">
-      <span class="number">{{number}}</span>
+      <Transition>
+        <span class="number" v-if="change" >{{props.number}}</span>
+      </Transition>
     </div>
-    <span class="block pt-2 label">{{ label }}</span>
+    <span class="block pt-2 label">{{ props.label }}</span>
   </div>
 </template>
 <style scoped>
